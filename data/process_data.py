@@ -39,6 +39,9 @@ def clean_data(df):
         categories[column] = categories[column].str[-1]
         categories[column] = categories[column].astype(np.int)
         
+    # Review: Convert related column into binary
+    categories = categories.clip(0,1)
+        
     #Add the new categories columns back to the orginal Dataframe and drop duplicate
     df.drop('categories',axis=1, inplace=True)
     df = pd.concat([df,categories],axis=1)

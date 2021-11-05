@@ -27,7 +27,13 @@ def tokenize(text):
     return clean_tokens
 
 class StartingVerbExtractor(BaseEstimator, TransformerMixin):
+        """
+    Starting Verb Extractor class
 
+    This class extract the starting verb of a sentence,
+    creating a new feature for the ML classifier
+    """
+    #Extracting the first verb
     def starting_verb(self, text):
         sentence_list = nltk.sent_tokenize(text)
         for sentence in sentence_list:
@@ -40,6 +46,7 @@ class StartingVerbExtractor(BaseEstimator, TransformerMixin):
     def fit(self, x, y=None):
         return self
 
+    #Transform into Dataframe
     def transform(self, X):
         X_tagged = pd.Series(X).apply(self.starting_verb)
         return pd.DataFrame(X_tagged)

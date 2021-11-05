@@ -80,7 +80,14 @@ def tokenize(text):
     return clean_tokens
 
 class StartingVerbExtractor(BaseEstimator, TransformerMixin):
+    """
+    Starting Verb Extractor class
 
+    This class extract the starting verb of a sentence,
+    creating a new feature for the ML classifier
+    """
+
+    #Extracting the first verb
     def starting_verb(self, text):
         sentence_list = nltk.sent_tokenize(text)
         for sentence in sentence_list:
@@ -93,6 +100,7 @@ class StartingVerbExtractor(BaseEstimator, TransformerMixin):
     def fit(self, x, y=None):
         return self
 
+    #Transform into Dataframe
     def transform(self, X):
         X_tagged = pd.Series(X).apply(self.starting_verb)
         return pd.DataFrame(X_tagged)
@@ -116,8 +124,26 @@ def build_model():
             ('starting_verb', StartingVerbExtractor())
         ])),
 
-        ('clf', RandomForestClassifier())
+        #('clf', RandomForestClassifier())
+        ('clf', MultiOutputClassifier(AdaBoostClassifier()))
     ])
+    
+    parameters = {
+        'features__text_pipeline__vect__ngram_range': ((1, 1), (1, 2)),
+        'features__text_pipeline__vect__max_df': (0.5, 0.75, 1.0),
+        #'features__text_pipeline__vect__max_features': (None, 5000, 10000),
+        'features__text_pipeline__tfidf__use_idf': (True, False),
+        'clf__hidden_layer_sizes': ((32,),(64,)),
+        'clf__n_estimators': [10, 50, 100],
+        'clf__min_samples_split': [2, 3, 4],
+        #'features__transformer_weights': (
+            #{'text_pipeline': 1, 'starting_verb': 0.5},
+           # {'text_pipeline': 0.5, 'starting_verb': 1},
+           # {'text_pipeline': 0.8, 'starting_verb': 1},
+        #)
+    }
+
+    cv = GridSearchCV(pipeline, param_grid=parameters)
     
     return pipeline
 

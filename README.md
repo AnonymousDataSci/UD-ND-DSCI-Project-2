@@ -1,7 +1,13 @@
 # Disaster Response Pipeline Project
 
 ## Project Description
-This projects aims to built a model that classifies messages during a desaster. Examples are provided by figure8. There are different categories a disaster message can be part of. Goal is to train a model that can classify unseen messages in one or more of the catergories
+This project will analyze disaster data from Figure Eight to build a model for an API that classifies disaster messages.
+
+A data set containing real messages that were sent during disaster events. The projects containsa machine learning pipeline to categorize these events so that you can send the messages that will be linked to an appropriate disaster relief agency.
+
+The project will include a web app where an emergency worker can input a new message and get classification results in several categories. The web app will also display visualizations of the data. 
+
+This projects aims to built a model that classifies messages during a desaster. Examples are provided by figure8. There are different categories a disaster message can be part of. Goal is to train a model that can classify unseen messages in one or more of the catergories.
 
 ## File Structure
         disaster_response_pipeline
